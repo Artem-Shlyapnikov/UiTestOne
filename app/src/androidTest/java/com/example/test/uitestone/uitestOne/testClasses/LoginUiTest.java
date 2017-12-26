@@ -30,8 +30,21 @@ public class LoginUiTest extends ActivitiesApp {
     }
 
     @Test
-    public void chooseCountry() throws UiObjectNotFoundException {
+    public void actionBarRootEnabledCheck() throws UiObjectNotFoundException {
         codeCountryField().clickAndWaitForNewWindow();
-        assertFalse("Action bar root not enabled", actionBarRoot().isEnabled());
+        assertTrue("Action bar root not enabled", actionBarRoot().isEnabled());
+    }
+
+    @Test
+    public void chooseCountryInActionBar() throws UiObjectNotFoundException{
+
+        for (int i=0; i<2; i++) {
+            String country[] = {"Russia", "Kyrgyzstan"};
+            String codeCountry[] = {"Россия (+7)","Кыргызстан (+996)"};
+            codeCountryField().clickAndWaitForNewWindow();
+            selectDialogListView(1-i).clickAndWaitForNewWindow();
+            assertTrue("In field country not selected country "+country[i],
+                    codeCountryField().getText().equals(codeCountry[i]));
+        }
     }
 }
