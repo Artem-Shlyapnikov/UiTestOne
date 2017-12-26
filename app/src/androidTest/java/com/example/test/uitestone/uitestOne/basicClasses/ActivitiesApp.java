@@ -18,4 +18,16 @@ public class ActivitiesApp extends StartMainActivity {
         return Selectors.selectorById("co.namba1.dev:id/select_dialog_listview")
                 .getChild(new UiSelector().index(i));
     }
+
+    public static UiObject numberPhoneField() throws UiObjectNotFoundException{
+        return Selectors.selectorById("co.namba1.dev:id/phone");
+    }
+
+    public static UiObject logInButton() throws UiObjectNotFoundException{
+        return Selectors.selectorById("co.namba1.dev:id/start");
+    }
+
+    public static UiObject startActivity() throws UiObjectNotFoundException{
+        return Selectors.selectorById("co.namba1.dev:id/root");
+    }
 }

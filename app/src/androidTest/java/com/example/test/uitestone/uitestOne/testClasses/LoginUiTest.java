@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 
 import com.example.test.uitestone.uitestOne.basicClasses.ActivitiesApp;
+import com.example.test.uitestone.uitestOne.basicClasses.Selectors;
 import com.example.test.uitestone.uitestOne.basicClasses.StartMainActivity;
 
 import org.junit.Before;
@@ -44,6 +45,31 @@ public class LoginUiTest extends ActivitiesApp {
             selectDialogListView(1-i).clickAndWaitForNewWindow();
             assertTrue("In field country not selected country "+country[i],
                     codeCountryField().getText().equals(codeCountry[i]));
+        }
+    }
+
+    @Test
+    public void loginWithoutPhoneNumber() throws UiObjectNotFoundException{
+        logInButton().clickAndWaitForNewWindow();
+        assertTrue("No login activity is displayed", startActivity().isEnabled());
+    }
+
+    @Test
+    public void loginWithIncorrectPhoneNumber() throws UiObjectNotFoundException{
+        numberPhoneField().setText("5559685");
+        logInButton().clickAndWaitForNewWindow();
+        assertTrue("No login activity is displayed", startActivity().isEnabled());
+    }
+
+    @Test
+    public void maskNumberPhoneField() throws UiObjectNotFoundException{
+        String masks[] = {"(***) ***-**-**","(***) **-**-**"};
+        for (int i=0; i<2; i++){
+            codeCountryField().clickAndWaitForNewWindow();
+            selectDialogListView(1-i).clickAndWaitForNewWindow();
+            assertTrue("The mask does not match the chosen country",
+                    numberPhoneField().getText().equals(masks[i]));
+
         }
     }
 }
