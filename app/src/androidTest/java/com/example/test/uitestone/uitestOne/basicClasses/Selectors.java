@@ -14,4 +14,8 @@ public class Selectors {
         UiObject selector = new UiObject(new UiSelector().className(name));
         return selector;
     }
+    protected static UiObject selectorByIndex(int i){
+        UiObject selector = new UiObject(new UiSelector().index(i));
+        return selector;
+    }
 }
