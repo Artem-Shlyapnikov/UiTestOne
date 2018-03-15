@@ -14,12 +14,12 @@ import static org.junit.Assert.assertThat;
 
 public class StartMainActivity {
     private static final String BASIC_SAMPLE_PACKAGE
-            = "co.namba1.dev";
-    private static final int LAUNCH_TIMEOUT = 2000;
+            = "co.namba1";
+    private static final int LAUNCH_TIMEOUT = 5000;
     private static final String STRING_TO_BE_TYPED = "UiAutomator";
     public static UiDevice mDevice;
 
-    public  void startMainActivity() {
+    public  void startMainActivity() throws InterruptedException {
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 

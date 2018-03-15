@@ -5,14 +5,12 @@ import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 
-import com.example.test.uitestone.uitestOne.basicClasses.ActivitiesApp;
-import com.example.test.uitestone.uitestOne.basicClasses.Selectors;
+import com.example.test.uitestone.uitestOne.basicClasses.LoginActivitySelectors;
 import com.example.test.uitestone.uitestOne.basicClasses.StartMainActivity;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.Assert;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,54 +20,69 @@ import static org.junit.Assert.assertTrue;
 
 
 
-public class LoginUiTest extends ActivitiesApp {
+public class LoginUiTest extends LoginActivitySelectors {
 
     @Before
-    public void startMainActivity() {
+    public void startMainActivity() throws InterruptedException {
         StartMainActivity mainActivity = new StartMainActivity();
         mainActivity.startMainActivity();
+
     }
 
+    /* Проверка свайпа в приветсвенном окне
+       Проверка соответсвия текста в плейсхолдерах
+     */
     @Test
-    public void actionBarRootEnabledCheck() throws UiObjectNotFoundException {
-        codeCountryField().clickAndWaitForNewWindow();
-        assertTrue("Action bar root not enabled", actionBarRoot().isEnabled());
-    }
-
-    @Test
-    public void chooseCountryInActionBar() throws UiObjectNotFoundException{
-        String country[] = {"Russia", "Kyrgyzstan"};
-        String codeCountry[] = {"Россия (+7)","Кыргызстан (+996)"};
-        for (int i=0; i<2; i++) {
-            codeCountryField().clickAndWaitForNewWindow();
-            selectDialogListView(1-i).clickAndWaitForNewWindow();
-            assertTrue("In field country not selected country "+country[i],
-                    codeCountryField().getText().equals(codeCountry[i]));
+    public void textMatchInWelcomePlaceHolder() throws UiObjectNotFoundException {
+        String title[] = {"Делись местоположением", "Находи друзей", "Наслаждайся общением"};
+        String description[] = {"Подключи геолокацию для использования функции “Рядом”.",
+                "Функция “Рядом” позволит найти собеседников поблизости.",
+                "Отправляй сообщение собеседнику поблизости."};
+        for (int i = 0; i<2; i++) {
+            assertTrue("Не сoответствует тайтл: " + title[i]+" или описание: "+
+                            description[i],
+                    titlePlaceHolder().getText().equals(title[i]) &&
+                            descriptionPlaceHolder().getText().equals(description[i]));
+            welcomePlaceHolderActivity().swipeLeft(5);
         }
     }
 
+    /*Проверка перехода из приветсвенного окна в окно авторизации после нажатия
+    на кнопку "Начать"*/
     @Test
-    public void loginWithoutPhoneNumber() throws UiObjectNotFoundException{
-        logInButton().clickAndWaitForNewWindow();
-        assertTrue("No login activity is displayed", startActivity().isEnabled());
+    public void openLogInActivity() throws UiObjectNotFoundException{
+        startButton().clickAndWaitForNewWindow();
+        assertTrue("Окно входа не отображается после нажатия на кнопку \"Начать\"",
+                logInActivity().isEnabled());
     }
 
+    //Проверка открытия активити списка всех стран
     @Test
-    public void loginWithIncorrectPhoneNumber() throws UiObjectNotFoundException{
-        numberPhoneField().setText("5559685");
-        logInButton().clickAndWaitForNewWindow();
-        assertTrue("No login activity is displayed", startActivity().isEnabled());
+    public void openCountryWindow() throws UiObjectNotFoundException{
+        startButton().clickAndWaitForNewWindow();
+        countryButtonLoginActivity().clickAndWaitForNewWindow();
+        assertTrue("Окно списка стран не открывается", countryListActivity().isEnabled());
     }
 
+    //Проверка соответствия стран в начале, середине и в конце списка стран
     @Test
-    public void maskNumberPhoneField() throws UiObjectNotFoundException{
-        String masks[] = {"(***) ***-**-**","(***) **-**-**"};
-        for (int i=0; i<2; i++){
-            codeCountryField().clickAndWaitForNewWindow();
-            selectDialogListView(1-i).clickAndWaitForNewWindow();
-            assertTrue("The mask does not match the chosen country",
-                    numberPhoneField().getText().equals(masks[i]));
-
+    public void countriesInTheList() throws UiObjectNotFoundException{
+        startButton().clickAndWaitForNewWindow();
+        countryButtonLoginActivity().clickAndWaitForNewWindow();
+        assertTrue("Не отображается в начале списка страна \"Афганистан\" или не " +
+                        "соответствует ее код",
+                nameCountry(1).getText().contains("Afghanistan")&&
+                        codeCountry(1).getText().contains("+93"));
+        for (int i=0; i<10; i++){
+            countryListActivity().swipeUp(40);
+        }
+        assertTrue("Не отображается в начале списка страна \"Мексика\" или не " +
+                        "соответствует ее код",
+                nameCountry(3).getText().contains("Mexico")&&
+                        codeCountry(3).getText().contains("+52"));
+        for (int i=0; i<10; i++){
+            countryListActivity().swipeUp(40);
         }
     }
+
 }
