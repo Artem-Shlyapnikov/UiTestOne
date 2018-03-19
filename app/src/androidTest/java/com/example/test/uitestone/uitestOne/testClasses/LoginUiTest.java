@@ -9,15 +9,14 @@ import com.example.test.uitestone.uitestOne.basicClasses.LoginActivitySelectors;
 import com.example.test.uitestone.uitestOne.basicClasses.StartMainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
-
 
 
 public class LoginUiTest extends LoginActivitySelectors {
@@ -29,7 +28,7 @@ public class LoginUiTest extends LoginActivitySelectors {
 
     }
 
-    /* Проверка свайпа в приветсвенном окне
+    /* Проверка перехода между окнами при помощи свайпа в приветсвенном окне.
        Проверка соответсвия текста в плейсхолдерах
      */
     @Test
@@ -38,11 +37,13 @@ public class LoginUiTest extends LoginActivitySelectors {
         String description[] = {"Подключи геолокацию для использования функции “Рядом”.",
                 "Функция “Рядом” позволит найти собеседников поблизости.",
                 "Отправляй сообщение собеседнику поблизости."};
-        for (int i = 0; i<2; i++) {
-            assertTrue("Не сoответствует тайтл: " + title[i]+" или описание: "+
-                            description[i],
-                    titlePlaceHolder().getText().equals(title[i]) &&
-                            descriptionPlaceHolder().getText().equals(description[i]));
+        for (int i = 0; i < 2; i++) {
+            assertTrue("Отображается тайтл: "+titlePlaceHolder().getText()+
+                    "\nКорректный тайтл: "+title[i],
+                    titlePlaceHolder().getText().equals(title[i]));
+            assertTrue("Отображается описание: "+descriptionPlaceHolder().getText()+
+                    "\nКорректное описание: "+description[i],
+                    descriptionPlaceHolder().getText().equals(description[i]));
             welcomePlaceHolderActivity().swipeLeft(5);
         }
     }
@@ -50,7 +51,7 @@ public class LoginUiTest extends LoginActivitySelectors {
     /*Проверка перехода из приветсвенного окна в окно авторизации после нажатия
     на кнопку "Начать"*/
     @Test
-    public void openLogInActivity() throws UiObjectNotFoundException{
+    public void openLogInActivity() throws UiObjectNotFoundException {
         startButton().clickAndWaitForNewWindow();
         assertTrue("Окно входа не отображается после нажатия на кнопку \"Начать\"",
                 logInActivity().isEnabled());
@@ -58,31 +59,69 @@ public class LoginUiTest extends LoginActivitySelectors {
 
     //Проверка открытия активити списка всех стран
     @Test
-    public void openCountryWindow() throws UiObjectNotFoundException{
+    public void openCountryWindow() throws UiObjectNotFoundException {
         startButton().clickAndWaitForNewWindow();
         countryButtonLoginActivity().clickAndWaitForNewWindow();
         assertTrue("Окно списка стран не открывается", countryListActivity().isEnabled());
     }
 
     //Проверка соответствия стран в начале, середине и в конце списка стран
-    @Test
-    public void countriesInTheList() throws UiObjectNotFoundException{
+    @Ignore
+    public void countriesInTheList() throws UiObjectNotFoundException {
         startButton().clickAndWaitForNewWindow();
         countryButtonLoginActivity().clickAndWaitForNewWindow();
         assertTrue("Не отображается в начале списка страна \"Афганистан\" или не " +
                         "соответствует ее код",
-                nameCountry(1).getText().contains("Afghanistan")&&
+                nameCountry(1).getText().contains("Afghanistan") &&
                         codeCountry(1).getText().contains("+93"));
-        for (int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             countryListActivity().swipeUp(40);
         }
         assertTrue("Не отображается в начале списка страна \"Мексика\" или не " +
                         "соответствует ее код",
-                nameCountry(3).getText().contains("Mexico")&&
+                nameCountry(3).getText().contains("Mexico") &&
                         codeCountry(3).getText().contains("+52"));
-        for (int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             countryListActivity().swipeUp(40);
         }
     }
 
+    /*Проверка на отображение соответвующей страны, при вводе в поле "код страны" разных значений*/
+    @Test
+    public void changeCountryWhenEnterCode() throws UiObjectNotFoundException {
+        String code[]={"+996","+254","+1264"};
+        String nameCountry[]={"Kyrgyzstan", "Kenya","Anguilla"};
+        startButton().clickAndWaitForNewWindow();
+        for (int i=0; i<3;i++){
+            codeField().clearTextField();
+            codeField().setText(code[i]);
+            assertTrue("При вводе кода: "+code[i]+"\nОтображается страна: "+
+                            countryButtonLoginActivity().getText()+"\nСоответсующая страна: "+
+                    nameCountry[i], countryButtonLoginActivity().getText().equals(nameCountry[i]));
+        }
+    }
+
+    /* Проверка, соответсвует ли код страны, при выборе страны из общего списка стран
+     (например: +996 соответсвует выбранной стране "Кыргызстан")*/
+    @Test
+    public void changeCodeCountryWhenSelectCountry()throws UiObjectNotFoundException{
+        String listCountry[]={"Afghanistan","Zimbabwe"};
+        String codeSelectedCountry[]={"+93","+263"};
+        int countryId[]={1,10};
+        startButton().clickAndWaitForNewWindow();
+        for (int i=0; i<2; i++){
+            countryButtonLoginActivity().clickAndWaitForNewWindow();
+            if (i==1) {
+                for (int j=0; j<20;j++){
+                    countryListActivity().swipeUp(40);
+                }
+            }
+            nameCountry(countryId[i]).clickAndWaitForNewWindow();
+            assertTrue("В поле кода отображается значение: "+codeField().getText()+
+                            " \nКорректное значение: "+codeSelectedCountry[i]+
+                            ", для выбранной страны " +listCountry[i],
+                    codeField().getText().equals(codeSelectedCountry[i]));
+        }
+
+    }
 }
