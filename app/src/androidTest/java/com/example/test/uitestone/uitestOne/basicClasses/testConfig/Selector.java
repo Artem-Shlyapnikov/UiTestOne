@@ -1,20 +1,20 @@
-package com.example.test.uitestone.uitestOne.basicClasses;
+package com.example.test.uitestone.uitestOne.basicClasses.testConfig;
 
 
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiSelector;
 
-public class Selectors {
-    protected static UiObject selectorById(String id) {
+public class Selector {
+    public static UiObject ById(String id) {
         UiObject selector = new UiObject(new UiSelector()
                 .resourceId(id));
         return selector;
     }
-    protected static UiObject selectorByClassName(String name){
+    public static UiObject ByClassName(String name){
         UiObject selector = new UiObject(new UiSelector().className(name));
         return selector;
     }
-    protected static UiObject selectorByIndex(int i){
+    public static UiObject ByIndex(int i){
         UiObject selector = new UiObject(new UiSelector().index(i));
         return selector;
     }

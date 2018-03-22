@@ -5,8 +5,8 @@ import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 
-import com.example.test.uitestone.uitestOne.basicClasses.LoginActivitySelectors;
-import com.example.test.uitestone.uitestOne.basicClasses.StartMainActivity;
+import com.example.test.uitestone.uitestOne.basicClasses.objectActivities.LoginActivity;
+import com.example.test.uitestone.uitestOne.basicClasses.testConfig.StartMainActivity;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -19,7 +19,9 @@ import static org.junit.Assert.assertTrue;
 @SdkSuppress(minSdkVersion = 18)
 
 
-public class LoginUiTest extends LoginActivitySelectors {
+public class LoginUiTest{
+
+    LoginActivity loginObject = new LoginActivity();
 
     @Before
     public void startMainActivity() throws InterruptedException {
@@ -38,10 +40,10 @@ public class LoginUiTest extends LoginActivitySelectors {
                 "Функция “Рядом” позволит найти собеседников поблизости.",
                 "Отправляй сообщение собеседнику поблизости."};
         for (int i = 0; i < 2; i++) {
-            assertTrue("Отображается тайтл: "+titlePlaceHolder().getText()+
+            assertTrue("Отображается тайтл: "+loginObject.titlePlaceHolder().getText()+
                     "\nКорректный тайтл: "+title[i],
-                    titlePlaceHolder().getText().equals(title[i]));
-            assertTrue("Отображается описание: "+descriptionPlaceHolder().getText()+
+                    loginObject.titlePlaceHolder().getText().equals(title[i]));
+            assertTrue("Отображается описание: "+ loginObject.descriptionPlaceHolder().getText()+
                     "\nКорректное описание: "+description[i],
                     descriptionPlaceHolder().getText().equals(description[i]));
             welcomePlaceHolderActivity().swipeLeft(5);
