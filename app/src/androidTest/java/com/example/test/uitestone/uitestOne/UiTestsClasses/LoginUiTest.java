@@ -12,6 +12,7 @@ import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivit
 import com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig.StartMainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 @SdkSuppress(minSdkVersion = 18)
 
 
-public class LoginUiTest{
+public class LoginUiTest {
 
-    private LoginActivity loginActivityObject = new LoginActivity();
-    private SplashScreenActivity splashScreenObject = new SplashScreenActivity();
-    private CountryListActivity countryActivityObject = new CountryListActivity();
+    private LoginActivity loginActivity = new LoginActivity();
+    private SplashScreenActivity splashScreen = new SplashScreenActivity();
+    private CountryListActivity countryActivity = new CountryListActivity();
     private Scripts script = new Scripts();
 
     @Before
@@ -38,22 +39,22 @@ public class LoginUiTest{
     @Test
     public void checkSplashScreenTitle() throws UiObjectNotFoundException {
         for (int i = 0; i < 2; i++) {
-            String currentTitle = splashScreenObject.title().getText();
-            assertTrue("Отображается тайтл: "+currentTitle+
-                    "\nКорректный тайтл: "+splashScreenObject.correctTitle(i),
-                    currentTitle.equals(splashScreenObject.correctTitle(i)));
-            splashScreenObject.activity().swipeLeft(5);
-            }
+            String currentTitle = splashScreen.title().getText();
+            assertTrue("Отображается тайтл: " + currentTitle +
+                            "\nКорректный тайтл: " + splashScreen.correctTitle(i),
+                    currentTitle.equals(splashScreen.correctTitle(i)));
+            splashScreen.activity().swipeLeft(5);
+        }
     }
 
     @Test
     public void checkSplashScreenDescription() throws UiObjectNotFoundException {
         for (int i = 0; i < 2; i++) {
-            String currentDescription = splashScreenObject.description().getText();
-            assertTrue("Отображается дескрипшен: "+currentDescription+
-                    "\nКорректный дескрипшен: "+splashScreenObject.correctDescription(i),
-                    currentDescription.equals(splashScreenObject.correctDescription(i)));
-            splashScreenObject.activity().swipeLeft(5);
+            String currentDescription = splashScreen.description().getText();
+            assertTrue("Отображается дескрипшен: " + currentDescription +
+                            "\nКорректный дескрипшен: " + splashScreen.correctDescription(i),
+                    currentDescription.equals(splashScreen.correctDescription(i)));
+            splashScreen.activity().swipeLeft(5);
         }
     }
 
@@ -61,37 +62,28 @@ public class LoginUiTest{
     public void checkOpenLoginActivity() throws UiObjectNotFoundException {
         script.openLoginActivity();
         assertTrue("Окно входа не отображается после нажатия на кнопку \"Начать\"",
-                loginActivityObject.licenseAgreement().isEnabled());
+                loginActivity.licenseAgreement().isEnabled());
     }
 
     @Test
-    public void checkOpenCountryWindow() throws UiObjectNotFoundException {
+    public void checkOpenCountryActivity() throws UiObjectNotFoundException {
         script.openCountryActivity();
         assertTrue("Окно списка стран не открывается",
-                countryActivityObject.countryList().isEnabled());
+                countryActivity.activity().isEnabled());
     }
 
-//    //Проверка соответствия стран в начале, середине и в конце списка стран
-//    @Ignore
-//    public void countriesInTheList() throws UiObjectNotFoundException {
-//        startButton().clickAndWaitForNewWindow();
-//        countryButton().clickAndWaitForNewWindow();
-//        assertTrue("Не отображается в начале списка страна \"Афганистан\" или не " +
-//                        "соответствует ее код",
-//                nameCountry(1).getText().contains("Afghanistan") &&
-//                        codeCountry(1).getText().contains("+93"));
-//        for (int i = 0; i < 10; i++) {
-//            countryListActivity().swipeUp(40);
-//        }
-//        assertTrue("Не отображается в начале списка страна \"Мексика\" или не " +
-//                        "соответствует ее код",
-//                nameCountry(3).getText().contains("Mexico") &&
-//                        codeCountry(3).getText().contains("+52"));
-//        for (int i = 0; i < 10; i++) {
-//            countryListActivity().swipeUp(40);
-//        }
-//    }
-//
+    @Ignore
+    public void checkDisplayListInCountryActivity() throws UiObjectNotFoundException {
+        script.openCountryActivity();
+        for (int i = 0; i <=1; i++) {
+            String correctName =  countryActivity.correctNameCountry(i);
+            assertTrue("В списке не отображается страна: "+correctName,
+                    countryActivity.nameCountry(i).getText().equals(correctName));
+            for (int j=0; j<12;j++){
+                countryActivity.activity().swipeUp(5);
+            }
+        }
+    }
 //    Проверка на отображение соответвующей страны, при вводе в поле "код страны" разных значений
 ////    @Test
 ////    public void changeCountryWhenEnterCode() throws UiObjectNotFoundException {
@@ -131,3 +123,4 @@ public class LoginUiTest{
 ////
 ////    }
 }
+

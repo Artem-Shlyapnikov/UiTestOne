@@ -14,12 +14,11 @@ public class LoginActivity {
         return Selector.ById("co.namba1:id/countryButton");
     }
 
-
-    public static UiObject codeField() throws UiObjectNotFoundException{
+    public  UiObject codeField() throws UiObjectNotFoundException{
         return Selector.ById("co.namba1:id/codeField");
     }
 
-    public static UiObject nameCountryInCountryList() throws UiObjectNotFoundException{
+    public UiObject nameCountryInCountryList() throws UiObjectNotFoundException{
         return Selector.ById("co.namba1:id/name");
     }
 }
