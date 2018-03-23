@@ -1,4 +1,4 @@
-package com.example.test.uitestone.uitestOne.basicClasses.testConfig;
+package com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig;
 
 import android.content.Context;
 import android.content.Intent;
