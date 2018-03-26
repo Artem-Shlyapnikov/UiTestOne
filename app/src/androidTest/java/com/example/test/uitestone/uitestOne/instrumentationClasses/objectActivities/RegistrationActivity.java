@@ -15,5 +15,9 @@ public class RegistrationActivity {
     public UiObject avatarButton() throws UiObjectNotFoundException{
         return Selector.ById("co.namba1:id/avatar");
     }
+    public UiObject nameField() throws UiObjectNotFoundException{
+        return Selector.ById("co.namba1:id/name");
+    }
+
 
 }

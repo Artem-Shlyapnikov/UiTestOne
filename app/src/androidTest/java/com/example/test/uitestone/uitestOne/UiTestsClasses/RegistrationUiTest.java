@@ -10,8 +10,10 @@ import com.example.test.uitestone.uitestOne.instrumentationClasses.commands.Scri
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.GalleryActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.RegistrationActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SmsCodeActivity;
+import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SplashScreenActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig.StartMainActivity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,9 +31,10 @@ public class RegistrationUiTest {
     private SmsCodeActivity smsActivity = new SmsCodeActivity();
     private RegistrationActivity regActivity = new RegistrationActivity();
     private GalleryActivity gallery = new GalleryActivity();
+    private SplashScreenActivity splashScreenActivity = new SplashScreenActivity();
 
     @Before
-    public void startMainActivity() throws InterruptedException {
+    public void startMainActivity() throws InterruptedException, UiObjectNotFoundException {
         StartMainActivity mainActivity = new StartMainActivity();
         mainActivity.startMainActivity();
     }
@@ -65,14 +68,11 @@ public class RegistrationUiTest {
                 smsActivity.sendSmsCode().getText().contains("Повторная отправка кода через"));
     }
     @Test
-    public void checkChangeAvatarFromGallery()throws UiObjectNotFoundException{
+    public void checkRegisterWithEmptyNameField()throws UiObjectNotFoundException{
         script.openRegistrationActivity();
-        regActivity.avatarButton().clickAndWaitForNewWindow();
-        gallery.image(0).clickAndWaitForNewWindow();
-        gallery.image(2).clickAndWaitForNewWindow();
-        gallery.chooseImageButton().clickAndWaitForNewWindow();
+        regActivity.nameField().clearTextField();
+        regActivity.doneButton().clickAndWaitForNewWindow();
+        assertTrue("Пользователь может зарегестрироваться с пустым именем",
+                regActivity.nameField().isEnabled());
     }
-
-
-
 }
