@@ -12,4 +12,8 @@ public class RegistrationActivity {
         return Selector.ById("co.namba1:id/menu_done");
     }
 
+    public UiObject avatarButton() throws UiObjectNotFoundException{
+        return Selector.ById("co.namba1:id/avatar");
+    }
+
 }

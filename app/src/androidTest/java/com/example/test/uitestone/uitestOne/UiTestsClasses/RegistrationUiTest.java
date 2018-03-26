@@ -7,6 +7,8 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 
 import com.example.test.uitestone.uitestOne.instrumentationClasses.commands.Scripts;
 
+import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.GalleryActivity;
+import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.RegistrationActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SmsCodeActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig.StartMainActivity;
 
@@ -25,6 +27,8 @@ public class RegistrationUiTest {
 
     private Scripts script = new Scripts();
     private SmsCodeActivity smsActivity = new SmsCodeActivity();
+    private RegistrationActivity regActivity = new RegistrationActivity();
+    private GalleryActivity gallery = new GalleryActivity();
 
     @Before
     public void startMainActivity() throws InterruptedException {
@@ -59,6 +63,14 @@ public class RegistrationUiTest {
         smsActivity.sendSmsCode().clickAndWaitForNewWindow();
         assertTrue("У кнопки повторной отправки отсутствует ограничение на использование",
                 smsActivity.sendSmsCode().getText().contains("Повторная отправка кода через"));
+    }
+    @Test
+    public void checkChangeAvatarFromGallery()throws UiObjectNotFoundException{
+        script.openRegistrationActivity();
+        regActivity.avatarButton().clickAndWaitForNewWindow();
+        gallery.image(0).clickAndWaitForNewWindow();
+        gallery.image(2).clickAndWaitForNewWindow();
+        gallery.chooseImageButton().clickAndWaitForNewWindow();
     }
 
 

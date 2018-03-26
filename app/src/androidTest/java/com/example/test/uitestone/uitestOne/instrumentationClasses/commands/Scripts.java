@@ -7,6 +7,8 @@ import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivit
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.RegistrationActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SplashScreenActivity;
 
+import static com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig.StartMainActivity.mDevice;
+
 public class Scripts {
     private SplashScreenActivity splashScreenObject = new SplashScreenActivity();
     private LoginActivity loginObject = new LoginActivity();
@@ -31,6 +33,7 @@ public class Scripts {
         splashScreenObject.startButton().clickAndWaitForNewWindow();
         loginObject.phoneField().setText("552903503");
         loginObject.startButton().clickAndWaitForNewWindow();
+        mDevice.pressBack();
     }
     public void login() throws UiObjectNotFoundException{
         splashScreenObject.startButton().clickAndWaitForNewWindow();
