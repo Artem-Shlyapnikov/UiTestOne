@@ -8,6 +8,7 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.commands.Scripts;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.CountryListActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.LoginActivity;
+import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SmsCodeActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.objectActivities.SplashScreenActivity;
 import com.example.test.uitestone.uitestOne.instrumentationClasses.testConfig.StartMainActivity;
 
@@ -27,6 +28,7 @@ public class LoginUiTest {
     private LoginActivity loginActivity = new LoginActivity();
     private SplashScreenActivity splashScreen = new SplashScreenActivity();
     private CountryListActivity countryActivity = new CountryListActivity();
+    private SmsCodeActivity smsActivity = new SmsCodeActivity();
     private Scripts script = new Scripts();
 
     @Before
@@ -84,43 +86,42 @@ public class LoginUiTest {
             }
         }
     }
-//    Проверка на отображение соответвующей страны, при вводе в поле "код страны" разных значений
-////    @Test
-////    public void changeCountryWhenEnterCode() throws UiObjectNotFoundException {
-////        String code[]={"+996","+254","+1264"};
-////        String nameCountry[]={"Kyrgyzstan", "Kenya","Anguilla"};
-////        startButton().clickAndWaitForNewWindow();
-////        for (int i=0; i<3;i++){
-////            codeField().clearTextField();
-////            codeField().setText(code[i]);
-////            assertTrue("При вводе кода: "+code[i]+"\nОтображается страна: "+
-////                            countryButton().getText()+"\nСоответсующая страна: "+
-////                    nameCountry[i], countryButton().getText().equals(nameCountry[i]));
-////        }
-////    }
-////
-////     Проверка, соответсвует ли код страны, при выборе страны из общего списка стран
-////     (например: +996 соответсвует выбранной стране "Кыргызстан")
-////    @Test
-////    public void changeCodeCountryWhenSelectCountry()throws UiObjectNotFoundException{
-////        String listCountry[]={"Afghanistan","Zimbabwe"};
-////        String codeSelectedCountry[]={"+93","+263"};
-////        int countryId[]={1,10};
-////        startButton().clickAndWaitForNewWindow();
-////        for (int i=0; i<2; i++){
-////            countryButton().clickAndWaitForNewWindow();
-////            if (i==1) {
-////                for (int j=0; j<20;j++){
-////                    countryListActivity().swipeUp(40);
-////                }
-////            }
-////            nameCountry(countryId[i]).clickAndWaitForNewWindow();
-////            assertTrue("В поле кода отображается значение: "+codeField().getText()+
-////                            " \nКорректное значение: "+codeSelectedCountry[i]+
-////                            ", для выбранной страны " +listCountry[i],
-////                    codeField().getText().equals(codeSelectedCountry[i]));
-////        }
-////
-////    }
+    @Test
+    public void checkChangeCountryEnterCodeField() throws UiObjectNotFoundException{
+        script.openLoginActivity();
+        for (int i=0;i<3;i++){
+            String correctCode = loginActivity.testDataCountryCode(i);
+            String correctCountry = loginActivity.testDataCountryName(i);
+            loginActivity.codeField().clearTextField();
+            loginActivity.codeField().setText(correctCode);
+            String currentCountry = loginActivity.countryButton().getText();
+            assertTrue("При вводе кода: "+correctCode+"\nОтображается страна: "+
+                            currentCountry+"\nСоответсующая страна: "+
+                    correctCountry, currentCountry.equals(correctCountry));
+        }
+    }
+    @Test
+    public void loginWithEmptyPhoneField() throws UiObjectNotFoundException{
+        script.openLoginActivity();
+        loginActivity.phoneField().clearTextField();
+        loginActivity.startButton().clickAndWaitForNewWindow();
+        assertTrue("пользователь сумел авторизоваться с пустым полем телефона",
+                loginActivity.licenseAgreement().isEnabled());
+    }
+    @Test
+    public void loginWithIncorrectPhoneField() throws UiObjectNotFoundException{
+        script.openLoginActivity();
+        loginActivity.phoneField().clearTextField();
+        loginActivity.phoneField().setText("552875");
+        loginActivity.startButton().clickAndWaitForNewWindow();
+        assertTrue("Пользователь сумел авторизоваться с неполностью заполненым полем телефона",
+                loginActivity.licenseAgreement().isEnabled());
+    }
+    @Test
+    public void loginNewRegisteredUser() throws UiObjectNotFoundException{
+        script.openSmsCodeActivity();
+        assertTrue("Не отображается окно с вводом кода подтверждения",
+                smsActivity.description().isEnabled());
+    }
 }
 

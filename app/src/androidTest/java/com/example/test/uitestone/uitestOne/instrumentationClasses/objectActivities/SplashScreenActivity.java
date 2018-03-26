@@ -22,9 +22,9 @@ public class SplashScreenActivity {
     public UiObject description(){
         return Selector.ById("co.namba1:id/description");
     }
-    public String correctDescription(int i)throws UiObjectNotFoundException{
-        String [] description = {"Подключи геолокацию для использования функции “Рядом”.",
-                "Функция “Рядом” позволит найти собеседников поблизости.",
+    public String correctDescription(int i){
+        String [] description = {"Подключи геолокацию для использования функции “Поблизости”.",
+                "Функция “Поблизости” позволит найти собеседников поблизости.",
                 "Отправляй сообщение собеседнику поблизости."};
         return description[i];
     }

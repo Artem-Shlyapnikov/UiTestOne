@@ -14,11 +14,25 @@ public class LoginActivity {
         return Selector.ById("co.namba1:id/countryButton");
     }
 
+    public String testDataCountryName(int i){
+        String nameCountry[]={"Kyrgyzstan", "Kenya","Anguilla"};
+        return nameCountry[i];
+    }
+
     public  UiObject codeField() throws UiObjectNotFoundException{
         return Selector.ById("co.namba1:id/codeField");
     }
 
-    public UiObject nameCountryInCountryList() throws UiObjectNotFoundException{
-        return Selector.ById("co.namba1:id/name");
+    public String testDataCountryCode(int i){
+        String code[]={"+996","+254","+1264"};
+        return code[i];
+    }
+
+    public UiObject phoneField() throws UiObjectNotFoundException{
+        return Selector.ById("co.namba1:id/phoneField");
+    }
+
+    public UiObject startButton() throws UiObjectNotFoundException{
+        return Selector.ById("co.namba1:id/start");
     }
 }

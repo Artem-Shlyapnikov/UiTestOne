@@ -18,4 +18,10 @@ public class Scripts {
         splashScreenObject.startButton().clickAndWaitForNewWindow();
         loginObject.countryButton().clickAndWaitForNewWindow();
     }
+
+    public void openSmsCodeActivity()throws UiObjectNotFoundException{
+        splashScreenObject.startButton().clickAndWaitForNewWindow();
+        loginObject.phoneField().setText("703032941");
+        loginObject.startButton().clickAndWaitForNewWindow();
+    }
 }
